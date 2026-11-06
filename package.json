@@ -1,0 +1,22 @@
+{
+  "name": "info-darurat",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.11.4",
+    "@vite-pwa/nuxt": "^0.7.0",
+    "nuxt": "^3.10.0",
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@nuxtjs/supabase": "^2.1.0"
+  }
+}
