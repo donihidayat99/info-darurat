@@ -1,145 +1,169 @@
 <template>
   <div class="bg-gray-50 min-h-screen py-8">
-    <div class="container mx-auto px-4 max-w-4xl space-y-6">
+    <div class="container mx-auto px-4 max-w-3xl space-y-6">
       
-      <!-- Navigasi Kembali ke Dashboard -->
-      <div class="flex justify-between items-center">
+      <!-- Navigasi Kembali -->
+      <div>
         <NuxtLink to="/dashboard" class="text-xs font-bold text-gray-600 hover:text-red-600 flex items-center gap-1">
-          ← Kembali ke Dashboard Utama
+          ← Kembali ke Dashboard
         </NuxtLink>
-        <span class="text-xs text-gray-400">ID Mitra: #MTR-8821</span>
       </div>
 
-      <!-- Card Utama Profil -->
-      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm space-y-8">
-        
-        <!-- Header Profil (Avatar & Badge Status Verifikasi) -->
-        <div class="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-gray-100">
-          <div class="w-24 h-24 rounded-2xl bg-red-100 text-red-600 font-bold flex items-center justify-center text-3xl shadow-inner border border-red-200">
-            RK
-          </div>
-          <div class="text-center sm:text-left space-y-1">
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-              <h1 class="text-2xl font-black text-gray-900">Relawan Kemanusiaan Purwokerto</h1>
-              <span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-200">
-                ✓ Mitra Terverifikasi
-              </span>
-            </div>
-            <p class="text-xs text-gray-500">Tipe Akun: <strong>Lembaga / Yayasan Sosial</strong></p>
-            <p class="text-[11px] text-gray-400">Bergabung sejak: Oktober 2026</p>
-          </div>
+      <!-- Header Kartu -->
+      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm space-y-6">
+        <div>
+          <span class="bg-red-50 text-red-600 text-xs font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">
+            Pengaturan Akun & Privasi
+          </span>
+          <h1 class="text-2xl font-black text-gray-900 mt-2">Profil Mitra Penolong</h1>
+          <p class="text-xs sm:text-sm text-gray-500 mt-1">
+            Kelola informasi profil dan atur bagaimana warga dapat menghubungi Anda saat membutuhkan bantuan.
+          </p>
         </div>
 
-        <!-- Form Pengaturan Informasi Profil -->
-        <form @submit.prevent="handleSaveProfile" class="space-y-6">
-          <h2 class="font-bold text-gray-900 text-base border-b border-gray-100 pb-2">
-            Informasi Identitas & Kontak Siaga
-          </h2>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Mitra / Lembaga *</label>
-              <input 
-                v-model="profile.name"
-                type="text" 
-                class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none"
-                required
-              />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Penanggung Jawab (PIC) *</label>
-              <input 
-                v-model="profile.picName"
-                type="text" 
-                class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Alamat Email *</label>
-              <input 
-                v-model="profile.email"
-                type="email" 
-                class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none bg-gray-50"
-                disabled
-              />
-              <span class="text-[10px] text-gray-400">Email tidak dapat diubah secara langsung.</span>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Nomor WhatsApp / Telp Siaga *</label>
-              <input 
-                v-model="profile.phone"
-                type="text" 
-                class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none"
-                required
-              />
-            </div>
-          </div>
-
-          <!-- Wilayah Domisili Posko / Mitra -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Kabupaten / Kota *</label>
-              <input 
-                v-model="profile.city"
-                type="text" 
-                class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none"
-                required
-              />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Kecamatan / Kelurahan *</label>
-              <input 
-                v-model="profile.district"
-                type="text" 
-                class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none"
-                required
-              />
-            </div>
-          </div>
-
+        <!-- Form Profil -->
+        <form @submit.prevent="updateProfile" class="space-y-5">
+          
+          <!-- Nama Organisasi / Mitra -->
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Alamat Posko Utama / Rumah *</label>
-            <textarea 
-              v-model="profile.address"
-              rows="3"
-              class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none"
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+              Nama Organisasi / Mitra Penolong
+            </label>
+            <input 
+              v-model="profile.name" 
+              type="text" 
+              placeholder="Contoh: Relawan Kemanusiaan Purwokerto"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs sm:text-sm text-gray-900 focus:border-red-500 focus:outline-none transition font-medium"
               required
-            ></textarea>
+            />
+          </div>
+
+          <!-- Nomor WhatsApp -->
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+              Nomor WhatsApp Utama
+            </label>
+            <input 
+              v-model="profile.whatsapp" 
+              type="text" 
+              placeholder="Contoh: 6281234567890"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs sm:text-sm text-gray-900 focus:border-red-500 focus:outline-none transition font-medium"
+            />
+            <p class="text-[11px] text-gray-400 mt-1">Gunakan awalan kode negara (62...), tanpa tanda plus (+).</p>
+          </div>
+
+          <!-- Email Kontak -->
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+              Alamat Email (Untuk Notifikasi Bantuan)
+            </label>
+            <input 
+              v-model="profile.email" 
+              type="email" 
+              placeholder="contoh@domain.com"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs sm:text-sm text-gray-900 focus:border-red-500 focus:outline-none transition font-medium"
+              required
+            />
+          </div>
+
+          <!-- 🔥 FITUR BARU: Preferensi Kontak & Privasi -->
+          <div class="pt-4 border-t border-gray-100 space-y-3">
+            <div>
+              <label class="block text-xs font-bold text-gray-900 uppercase tracking-wider">
+                Preferensi Saluran Kontak Warga
+              </label>
+              <p class="text-xs text-gray-500 mt-0.5">
+                Pilih bagaimana warga dapat menghubungi Anda pada setiap listing bantuan yang Anda buat.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              
+              <!-- Opsi 1: WhatsApp Direct -->
+              <label 
+                :class="profile.contact_preference === 'wa_direct' ? 'border-red-600 bg-red-50/40 ring-2 ring-red-500/20' : 'border-gray-200 bg-white'"
+                class="flex flex-col p-4 rounded-xl border cursor-pointer transition space-y-1"
+              >
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-gray-900">🟢 WhatsApp Direct</span>
+                  <input type="radio" v-model="profile.contact_preference" value="wa_direct" class="text-red-600 focus:ring-red-500" />
+                </div>
+                <p class="text-[11px] text-gray-500 leading-relaxed">
+                  Tombol langsung mengarah ke aplikasi WhatsApp Anda. Nomor HP terlihat oleh publik.
+                </p>
+              </label>
+
+              <!-- Opsi 2: Email Form (Jaga Privasi) -->
+              <label 
+                :class="profile.contact_preference === 'email_form' ? 'border-red-600 bg-red-50/40 ring-2 ring-red-500/20' : 'border-gray-200 bg-white'"
+                class="flex flex-col p-4 rounded-xl border cursor-pointer transition space-y-1"
+              >
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-gray-900">✉️ Form Email (Privasi)</span>
+                  <input type="radio" v-model="profile.contact_preference" value="email_form" class="text-red-600 focus:ring-red-500" />
+                </div>
+                <p class="text-[11px] text-gray-500 leading-relaxed">
+                  Warga mengirim pesan via form pop-up web. Nomor HP Anda aman dan disembunyikan.
+                </p>
+              </label>
+
+            </div>
           </div>
 
           <!-- Tombol Simpan -->
-          <div class="pt-4 flex items-center justify-end gap-3 border-t border-gray-100">
+          <div class="pt-4">
             <button 
               type="submit" 
-              class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-md transition"
+              :disabled="loading"
+              class="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm rounded-xl transition shadow-sm cursor-pointer disabled:opacity-50"
             >
-              💾 Simpan Perubahan Profil
+              {{ loading ? 'Menyimpan Perubahan...' : 'Simpan Pengaturan Profil' }}
             </button>
           </div>
 
-        </form>
+          <!-- Pesan Sukses / Error -->
+          <p v-if="feedbackMessage" :class="isError ? 'text-red-600 bg-red-50' : 'text-green-600 bg-green-50'" class="p-3 rounded-xl text-xs font-bold text-center">
+            {{ feedbackMessage }}
+          </p>
 
+        </form>
       </div>
+
     </div>
   </div>
 </template>
 
 <script setup>
+const loading = ref(false)
+const feedbackMessage = ref('')
+const isError = ref(false)
+
+// Mock Data Profil Mitra (Nanti dihubungkan ke Supabase tabel profiles)
 const profile = ref({
   name: 'Relawan Kemanusiaan Purwokerto',
-  picName: 'Budi Santoso',
-  email: 'relawan.purwokerto@gmail.com',
-  phone: '081234567890',
-  city: 'Kab. Banyumas',
-  district: 'Purwokerto Utara',
-  address: 'Jl. Serayu No. 12, Sumampir, Purwokerto Utara, Banyumas'
+  whatsapp: '6281234567890',
+  email: 'relawan@infodarurat.id',
+  contact_preference: 'email_form' // Default pilihan privasi
 })
 
-const handleSaveProfile = () => {
-  alert('Informasi profil Mitra Darurat berhasil diperbarui!')
+const updateProfile = async () => {
+  loading.value = true
+  feedbackMessage.value = ''
+  
+  try {
+    // Simulasi simpan data ke database Supabase
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    // TODO: Ganti dengan logika update database Supabase yang sebenarnya
+    // const { error } = await client.from('profiles').update(profile.value).eq('id', userId)
+
+    isError.value = false
+    feedbackMessage.value = '✅ Pengaturan profil dan preferensi kontak berhasil diperbarui!'
+  } catch (err) {
+    isError.value = true
+    feedbackMessage.value = '❌ Gagal menyimpan perubahan. Silakan coba lagi.'
+  } finally {
+    loading.value = false
+  }
 }
 </script>

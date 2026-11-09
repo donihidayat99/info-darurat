@@ -2,7 +2,7 @@
   <div class="bg-gray-50 min-h-screen py-8">
     <div class="container mx-auto px-4 max-w-5xl">
       
-      <!-- Tombol Kembali & Breadcrumb (Tersinkron ke /listings) -->
+      <!-- Tombol Kembali & Breadcrumb -->
       <div class="mb-6 flex items-center justify-between">
         <NuxtLink to="/listings" class="text-xs font-bold text-gray-600 hover:text-red-600 flex items-center gap-1 cursor-pointer">
           ← Kembali ke Pencarian & Direktori
@@ -100,26 +100,35 @@
                 <span class="font-semibold text-gray-800">{{ listing.ownerType }}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-400">Respon Kontak:</span>
-                <span class="font-semibold text-gray-800">Cepat (&lt; 15 menit)</span>
+                <span class="text-gray-400">Saluran Kontak:</span>
+                <span class="font-semibold text-emerald-700">
+                  {{ listing.contact_preference === 'wa_direct' ? 'WhatsApp Langsung' : 'Form Email (Privasi)' }}
+                </span>
               </div>
             </div>
 
-            <!-- Tombol Aksi Kontak Cepat -->
+            <!-- TOMBOL AKSI KONTAK (BERDASARKAN PREFERENSI MITRA) -->
             <div class="space-y-2 border-t border-gray-100 pt-4">
+              
+              <!-- Opsi A: Jika Mitra Memilih WhatsApp Direct -->
               <a 
-                :href="`tel:${listing.phone}`" 
-                class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition duration-200 shadow-md flex items-center justify-center gap-2 cursor-pointer"
-              >
-                📞 Telepon Langsung
-              </a>
-              <a 
-                :href="`https://wa.me/${listing.whatsapp}?text=Halo%20${listing.provider},%20saya%20butuh%20info%20terkait%20${listing.title}`" 
+                v-if="listing.contact_preference === 'wa_direct'"
+                :href="whatsappUrl" 
                 target="_blank"
                 class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition duration-200 shadow-md flex items-center justify-center gap-2 cursor-pointer"
               >
                 💬 Hubungi via WhatsApp
               </a>
+
+              <!-- Opsi B: Jika Mitra Memilih Form Email (Jaga Privasi Nomor HP) -->
+              <button 
+                v-else
+                @click="isEmailModalOpen = true"
+                class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition duration-200 shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              >
+                ✉️ Kirim Pesan Bantuan (Email)
+              </button>
+
             </div>
 
             <!-- Warning Keamanan -->
@@ -132,13 +141,25 @@
 
       </div>
     </div>
+
+    <!-- KOMPONEN MODAL FORM EMAIL (Dipanggil Jika Kontak via Email) -->
+    <ContactEmailModal 
+      :isOpen="isEmailModalOpen"
+      :providerName="listing.provider"
+      :listingTitle="listing.title"
+      :providerEmail="listing.contact_email"
+      @close="isEmailModalOpen = false"
+    />
   </div>
 </template>
 
 <script setup>
 const route = useRoute()
 
-// Mock data detail aset bantuan (Nantinya diambil dari Database berdasarkan route.params.id)
+// State untuk modal form email privasi
+const isEmailModalOpen = ref(false)
+
+// Mock data detail aset bantuan lengkap dengan preferensi kontak
 const listing = ref({
   id: route.params.id || '1',
   title: 'Tabung Oksigen 1m3 + Regulator Siap Pakai',
@@ -149,8 +170,9 @@ const listing = ref({
   cost: 'Gratis (Peminjaman)',
   coverage: 'Purwokerto & Sekitarnya',
   location: 'Jl. Serayu, Sumampir, Purwokerto Utara, Banyumas',
-  phone: '081234567890',
   whatsapp: '6281234567890',
+  contact_email: 'relawan@infodarurat.id',
+  contact_preference: 'email_form', // Ubah ke 'wa_direct' jika ingin ngetes tombol WA langsung
   description: `Tersedia 2 unit tabung oksigen ukuran 1m3 lengkap dengan regulator dan selang baru. 
 
 Bisa dipinjamkan gratis untuk warga yang membutuhkan kondisi darurat medis di wilayah Purwokerto dan sekitarnya. 
@@ -159,5 +181,11 @@ Syarat Peminjaman:
 1. Menunjukkan KTP Peminjam.
 2. Surat rujukan / keterangan butuh oksigen dari fasilitas kesehatan (jika ada).
 3. Pengambilan mandiri ke lokasi penolong.`
+})
+
+// Format otomatis link WhatsApp
+const whatsappUrl = computed(() => {
+  const text = encodeURIComponent(`Halo ${listing.value.provider}, saya butuh info terkait "${listing.value.title}" di Info Darurat.`)
+  return `https://wa.me/${listing.value.whatsapp}?text=${text}`
 })
 </script>

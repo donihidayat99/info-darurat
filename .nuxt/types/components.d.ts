@@ -14,6 +14,8 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 interface _GlobalComponents {
+  ListingCard: typeof import("../../components/listings/ListingCard.vue")['default']
+  ListingGrid: typeof import("../../components/listings/ListingGrid.vue")['default']
   AdminApprovalTab: typeof import("../../components/admin/AdminApprovalTab.vue")['default']
   AdminArticlesTab: typeof import("../../components/admin/AdminArticlesTab.vue")['default']
   AdminCategoriesTab: typeof import("../../components/admin/AdminCategoriesTab.vue")['default']
@@ -27,8 +29,6 @@ interface _GlobalComponents {
   CommonNavbar: typeof import("../../components/common/Navbar.vue")['default']
   HomeCategorySlider: typeof import("../../components/home/CategorySlider.vue")['default']
   HomeHeroSearch: typeof import("../../components/home/HeroSearch.vue")['default']
-  ListingCard: typeof import("../../components/listing/ListingCard.vue")['default']
-  ListingGrid: typeof import("../../components/listing/ListingGrid.vue")['default']
   NuxtWelcome: typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']
   NuxtLayout: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
   NuxtErrorBoundary: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']
@@ -60,6 +60,8 @@ interface _GlobalComponents {
   Html: typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Html']
   Body: typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Body']
   NuxtIsland: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island")['default']
+  LazyListingCard: LazyComponent<typeof import("../../components/listings/ListingCard.vue")['default']>
+  LazyListingGrid: LazyComponent<typeof import("../../components/listings/ListingGrid.vue")['default']>
   LazyAdminApprovalTab: LazyComponent<typeof import("../../components/admin/AdminApprovalTab.vue")['default']>
   LazyAdminArticlesTab: LazyComponent<typeof import("../../components/admin/AdminArticlesTab.vue")['default']>
   LazyAdminCategoriesTab: LazyComponent<typeof import("../../components/admin/AdminCategoriesTab.vue")['default']>
@@ -73,8 +75,6 @@ interface _GlobalComponents {
   LazyCommonNavbar: LazyComponent<typeof import("../../components/common/Navbar.vue")['default']>
   LazyHomeCategorySlider: LazyComponent<typeof import("../../components/home/CategorySlider.vue")['default']>
   LazyHomeHeroSearch: LazyComponent<typeof import("../../components/home/HeroSearch.vue")['default']>
-  LazyListingCard: LazyComponent<typeof import("../../components/listing/ListingCard.vue")['default']>
-  LazyListingGrid: LazyComponent<typeof import("../../components/listing/ListingGrid.vue")['default']>
   LazyNuxtWelcome: LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
   LazyNuxtLayout: LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
   LazyNuxtErrorBoundary: LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']>

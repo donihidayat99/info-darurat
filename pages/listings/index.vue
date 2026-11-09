@@ -76,11 +76,7 @@
 
       <!-- Grid Hasil Pencarian Listing -->
       <div v-if="filteredListings.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <ListingCard 
-          v-for="listing in filteredListings" 
-          :key="listing.id" 
-          :listing="listing" 
-        />
+<ListingCard v-for="listing in filteredListings" :key="listing.id" :listing="listing" />
       </div>
 
       <!-- State Jika Tidak Ada Hasil -->
@@ -166,7 +162,7 @@ const normalizeText = (str) => {
     .trim()
 }
 
-// Logika Pencarian Cerdas Lintas Bidang (Multi-Field Search)
+// Logika Pencarian Cerdas Multi-Keyword & Lintas Bidang
 const filteredListings = computed(() => {
   return listings.value.filter(item => {
     // Filter Kategori Chips
@@ -174,22 +170,22 @@ const filteredListings = computed(() => {
 
     if (!searchQuery.value) return matchesCategory
 
-    // Normalisasi input user & data
+    // 1. Normalisasi input user & data
     const q = normalizeText(searchQuery.value)
-    const title = normalizeText(item.title)
-    const category = normalizeText(item.category)
-    const provider = normalizeText(item.provider)
-    const location = normalizeText(item.location)
+    
+    // 2. Pecah query berdasarkan spasi menjadi array kata-kata individual (contoh: "ambulance banyumas" -> ["ambulance", "banyumas"])
+    const queryWords = q.split(/\s+/).filter(word => word.length > 0)
 
-    // Cocokkan di sembarang tempat (Judul, Kategori, Penyedia, atau Lokasi)
-    const matchesQuery = title.includes(q) || 
-                         category.includes(q) || 
-                         provider.includes(q) || 
-                         location.includes(q)
+    // Gabungkan seluruh teks dalam item menjadi satu string besar untuk dicari
+    const itemText = normalizeText(`${item.title} ${item.category} ${item.provider} ${item.location} ${item.costType || ''}`)
 
-    return matchesCategory && matchesQuery
+    // 3. Pastikan SEMUA kata yang diketik oleh pengguna ada di dalam data (AND search)
+    const matchesAllWords = queryWords.every(word => itemText.includes(word))
+
+    return matchesCategory && matchesAllWords
   })
 })
+
 
 // Fungsi ketika chip tren pencarian diklik
 const applyTrendingSearch = (keyword) => {

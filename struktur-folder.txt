@@ -1,0 +1,79 @@
+STRUKTUR FOLDER PROYEK INFO-DARURAT
+=====================================
+
+info-darurat/
+├── .gitignore
+├── app.vue
+├── gemini-pro.py
+├── nuxt.config.ts
+├── package.json
+├── assets/
+│   └── css/
+│       └── main.css
+├── components/
+│   ├── admin/
+│   │   ├── AdminApprovalTab.vue
+│   │   ├── AdminArticlesTab.vue
+│   │   ├── AdminCategoriesTab.vue
+│   │   ├── AdminListingsTab.vue
+│   │   ├── AdminMitraTab.vue
+│   │   ├── AdminReportsTab.vue
+│   │   └── AdminVerificationTab.vue
+│   ├── blog/
+│   │   └── BlogCard.vue
+│   ├── common/
+│   │   ├── EmergencyBanner.vue
+│   │   ├── Footer.vue
+│   │   └── Navbar.vue
+│   ├── home/
+│   │   ├── CategorySlider.vue
+│   │   └── HeroSearch.vue
+│   └── listings/
+│       ├── ListingCard.vue
+│       └── ListingGrid.vue
+├── composables/
+│   ├── useAuth.ts
+│   ├── useEmergency.ts
+│   └── useSupabaseData.ts
+├── pages/
+│   ├── admin/
+│   │   └── index.vue
+│   ├── auth/
+│   │   ├── login.vue
+│   │   ├── register.vue
+│   │   └── waiting-approval.vue
+│   ├── blog/
+│   │   ├── [slug].vue
+│   │   ├── create.vue
+│   │   └── index.vue
+│   ├── categories/
+│   │   └── index.vue
+│   ├── dashboard/
+│   │   ├── listings/
+│   │   │   └── create.vue
+│   │   ├── index.vue
+│   │   └── profile.vue
+│   ├── legal/
+│   │   ├── privacy.vue
+│   │   └── terms.vue
+│   ├── listings/
+│   │   ├── [id].vue
+│   │   └── index.vue
+│   ├── donation.vue
+│   ├── index.vue
+│   └── report.vue
+└── server/
+    ├── api/
+    │   ├── admin/
+    │   │   ├── approve-listing.post.ts
+    │   │   └── approve-user.post.ts
+    │   ├── auth/
+    │   │   ├── login.post.ts
+    │   │   ├── logout.post.ts
+    │   │   └── register.post.ts
+    │   ├── listings/
+    │   │   ├── [id].ts
+    │   │   ├── create.post.ts
+    │   │   └── index.get.ts
+    └── utils/
+        └── db.ts

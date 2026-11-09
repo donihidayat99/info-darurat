@@ -1,11 +1,26 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  compatibilityDate: '2026-10-27',
+  compatibilityDate: '2026-11-06',
+
   modules: [
     '@nuxtjs/tailwindcss',
     '@vite-pwa/nuxt'
   ],
+
+  experimental: {
+    appManifest: false
+  },
+
+  // Pengaturan direktori komponen (agar folder listings bisa dipanggil langsung tanpa prefix)
+  components: [
+    {
+      path: '~/components/listings',
+      pathPrefix: false,
+    },
+    '~/components'
+  ],
+
   app: {
     head: {
       title: 'Info Darurat - Layanan & Posko Darurat Indonesia',
@@ -17,6 +32,7 @@ export default defineNuxtConfig({
       ]
     }
   },
+
   pwa: {
     registerType: 'autoUpdate',
     manifest: {
