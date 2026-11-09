@@ -27,6 +27,9 @@ declare module "nitropack/types" {
     '/api/listings': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/listings/index.get').default>>>>
     }
+    '/api/whatsapp/webhook': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/whatsapp/webhook.post').default>>>>
+    }
     '/__nuxt_error': {
       'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../node_modules/@nuxt/nitro-server/dist/runtime/handlers/renderer').default>>>>
     }

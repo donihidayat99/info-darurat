@@ -102,7 +102,7 @@
               <div class="flex justify-between">
                 <span class="text-gray-400">Saluran Kontak:</span>
                 <span class="font-semibold text-emerald-700">
-                  {{ listing.contact_preference === 'wa_direct' ? 'WhatsApp Langsung' : 'Form Email (Privasi)' }}
+                  {{ listing.contact_preference === 'wa_direct' ? 'WhatsApp Langsung' : 'Form Pesan (Privasi)' }}
                 </span>
               </div>
             </div>
@@ -120,14 +120,14 @@
                 💬 Hubungi via WhatsApp
               </a>
 
-              <!-- Opsi B: Jika Mitra Memilih Form Email (Jaga Privasi Nomor HP) -->
-              <button 
+              <!-- Opsi B: Jika Mitra Memilih Form Pesan Privasi (Mengarahkan ke Halaman Khusus) -->
+              <NuxtLink 
                 v-else
-                @click="isEmailModalOpen = true"
+                :to="`/listings/contact/${listing.id}`"
                 class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition duration-200 shadow-md flex items-center justify-center gap-2 cursor-pointer"
               >
-                ✉️ Kirim Pesan Bantuan (Email)
-              </button>
+                ✉️ Kirim Pesan Bantuan
+              </NuxtLink>
 
             </div>
 
@@ -141,23 +141,11 @@
 
       </div>
     </div>
-
-    <!-- KOMPONEN MODAL FORM EMAIL (Dipanggil Jika Kontak via Email) -->
-    <ContactEmailModal 
-      :isOpen="isEmailModalOpen"
-      :providerName="listing.provider"
-      :listingTitle="listing.title"
-      :providerEmail="listing.contact_email"
-      @close="isEmailModalOpen = false"
-    />
   </div>
 </template>
 
 <script setup>
 const route = useRoute()
-
-// State untuk modal form email privasi
-const isEmailModalOpen = ref(false)
 
 // Mock data detail aset bantuan lengkap dengan preferensi kontak
 const listing = ref({

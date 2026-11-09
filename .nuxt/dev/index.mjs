@@ -2924,6 +2924,7 @@ const _lazy_XmX73P = () => Promise.resolve().then(function () { return register_
 const _lazy_1Br1fy = () => Promise.resolve().then(function () { return _id_; });
 const _lazy_7Bmzbo = () => Promise.resolve().then(function () { return create_post; });
 const _lazy_1osdOb = () => Promise.resolve().then(function () { return index_get; });
+const _lazy_6SuCLo = () => Promise.resolve().then(function () { return webhook_post$1; });
 const _lazy_FRGbJJ = () => Promise.resolve().then(function () { return renderer; });
 
 const handlers = [
@@ -2936,6 +2937,7 @@ const handlers = [
   { route: '/api/listings/:id', handler: _lazy_1Br1fy, lazy: true, middleware: false, method: undefined },
   { route: '/api/listings/create', handler: _lazy_7Bmzbo, lazy: true, middleware: false, method: "post" },
   { route: '/api/listings', handler: _lazy_1osdOb, lazy: true, middleware: false, method: "get" },
+  { route: '/api/whatsapp/webhook', handler: _lazy_6SuCLo, lazy: true, middleware: false, method: "post" },
   { route: '/__nuxt_error', handler: _lazy_FRGbJJ, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: handler$1, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_FRGbJJ, lazy: true, middleware: false, method: undefined }
@@ -3324,6 +3326,39 @@ const create_post = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePropert
 
 const index_get = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const webhook_post = defineEventHandler(async (event) => {
+  try {
+    const body = await readBody(event);
+    const senderPhone = body.sender || body.from || "";
+    const messageText = body.message || body.text || "";
+    if (!senderPhone || !messageText) {
+      return { status: false, message: "Invalid webhook payload" };
+    }
+    if (messageText.toLowerCase().includes("verifikasi")) {
+      const matchId = messageText.match(/#(\d+)/);
+      if (matchId && matchId[1]) {
+        const mitraId = matchId[1];
+        console.log(`\u2705 [WHATSAPP WEBHOOK] Menerima verifikasi untuk Mitra ID: ${mitraId} dari nomor ${senderPhone}`);
+      }
+    }
+    return {
+      success: true,
+      message: "Webhook processed successfully"
+    };
+  } catch (error) {
+    console.error("Error handling whatsapp webhook:", error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Internal Server Error on Webhook"
+    });
+  }
+});
+
+const webhook_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: webhook_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 function renderPayloadResponse(ssrContext) {
